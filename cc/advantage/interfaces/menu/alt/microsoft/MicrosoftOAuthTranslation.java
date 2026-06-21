@@ -2,6 +2,8 @@
  * Decompiled with CFR 0.152.
  */
 package cc.advantage.interfaces.menu.alt.microsoft;
+// NOTE: CLIENT_SECRET was originally exposed in this file. GitHub secret scanning blocked the push,
+// so we replaced it with "REDACTED". Register your own Azure AD app if you need Microsoft login.
 
 import cc.advantage.api.web.Browser;
 import com.google.gson.Gson;
@@ -26,7 +28,7 @@ import java.util.function.Consumer;
 public class MicrosoftOAuthTranslation {
     static ExecutorService executor = Executors.newSingleThreadExecutor();
     private static final String CLIENT_ID = "9fbc7315-7200-4b2b-a655-bb38c865da17";
-    private static final String CLIENT_SECRET = "Bzn8Q~YryydJsydgnnxHgJq.NM3Oo4.AEEohLbBb";
+    private static final String CLIENT_SECRET = "REDACTED";
     private static final int PORT = 8247;
     private static HttpServer server;
     private static Consumer<String> callback;
@@ -44,11 +46,11 @@ public class MicrosoftOAuthTranslation {
     public static void getRefreshToken(Consumer<String> callback) {
         MicrosoftOAuthTranslation.callback = callback;
         MicrosoftOAuthTranslation.startServer();
-        MicrosoftOAuthTranslation.browse("https://login.live.com/oauth20_authorize.srf?client_id=9fbc7315-7200-4b2b-a655-bb38c865da17&client_secret=Bzn8Q~YryydJsydgnnxHgJq.NM3Oo4.AEEohLbBb&response_type=code&redirect_uri=http://localhost:8247&scope=XboxLive.signin%20offline_access");
+        MicrosoftOAuthTranslation.browse("https://login.live.com/oauth20_authorize.srf?client_id=9fbc7315-7200-4b2b-a655-bb38c865da17&client_secret=REDACTED&response_type=code&redirect_uri=http://localhost:8247&scope=XboxLive.signin%20offline_access");
     }
 
     public static LoginData login(String refreshToken) {
-        AuthTokenResponse res = gson.fromJson(Browser.postExternal("https://login.live.com/oauth20_token.srf", "client_id=9fbc7315-7200-4b2b-a655-bb38c865da17&client_secret=Bzn8Q~YryydJsydgnnxHgJq.NM3Oo4.AEEohLbBb&refresh_token=" + refreshToken + "&grant_type=refresh_token&redirect_uri=http://localhost:8247", false), AuthTokenResponse.class);
+        AuthTokenResponse res = gson.fromJson(Browser.postExternal("https://login.live.com/oauth20_token.srf", "client_id=9fbc7315-7200-4b2b-a655-bb38c865da17&client_secret=REDACTED&refresh_token=" + refreshToken + "&grant_type=refresh_token&redirect_uri=http://localhost:8247", false), AuthTokenResponse.class);
         if (res == null) {
             return new LoginData();
         }
@@ -255,7 +257,7 @@ public class MicrosoftOAuthTranslation {
         }
 
         private void handleCode(String code) {
-            String response = Browser.postExternal("https://login.live.com/oauth20_token.srf", "client_id=9fbc7315-7200-4b2b-a655-bb38c865da17&code=" + code + "&client_secret=Bzn8Q~YryydJsydgnnxHgJq.NM3Oo4.AEEohLbBb&grant_type=authorization_code&redirect_uri=http://localhost:8247", false);
+            String response = Browser.postExternal("https://login.live.com/oauth20_token.srf", "client_id=9fbc7315-7200-4b2b-a655-bb38c865da17&code=" + code + "&client_secret=REDACTED&grant_type=authorization_code&redirect_uri=http://localhost:8247", false);
             AuthTokenResponse res = gson.fromJson(response, AuthTokenResponse.class);
             if (res == null) {
                 callback.accept(null);
